@@ -1,33 +1,40 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 import './LoginForm.modeul.css';
 import loginImage from '../../Assets/Images/loginImage.png';
 
-const LoginForm = () => {
-    const  [ formInformation, setFormInformation ] = useState({email: '',password: ''})
+const LoginForm = (props) => {
+    const [ formInformation, setFormInformation ] = useState({email: '',password: ''})
+    const [ isLoggedIn, setIsLoggedIn] = useState(false);
+    if( isLoggedIn ) {
+      props.isLoggedIn()
+    }
 
     const submitFormData = (e) => {
         e.preventDefault()
         const CORSHack = 'https://cors-anywhere.herokuapp.com/'
         const baseURL = `${CORSHack}https://test-api.clonedesk.com/api/v2/current-user/login-session`;
-        const loginInformation = {...formInformation}
         axios.post(baseURL, {
-          'email' : loginInformation.email,
-          'password' : loginInformation.password,
+          'email' : formInformation.email,
+          'password' : formInformation.password,
         })
         .then(response => {
           const sessionKey = response.data.session_key;
-          sessionKey && localStorage.setItem('sessionKey', sessionKey);
-          console.log('You are logged in!')
+          if(sessionKey) {
+            localStorage.setItem('sessionKey', sessionKey)
+            document.cookie = `sessionKey=${sessionKey}`;
+            setIsLoggedIn(true);
+          }
         })
         .catch(error => console.log(error))
       }
 
     const saveInformationFromForm = (event) => {
         event.target.name === 'email'
-        ? setFormInformation({ email:event.target.value }) 
+        ? setFormInformation({...formInformation ,email:event.target.value }) 
         : event.target.name === 'password'
-        ? setFormInformation({ password:event.target.value }) 
+        ? setFormInformation({...formInformation, password:event.target.value }) 
         : console.log('No data to save!')
       }
 
@@ -52,4 +59,4 @@ const LoginForm = () => {
     );
 }
 
-export default LoginForm;
+export default withRouter(LoginForm);
