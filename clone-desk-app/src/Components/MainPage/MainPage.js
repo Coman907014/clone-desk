@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; 
 
+import Header from '../Header/Header';
+
 const MainPage = () => {
     const [ sideBarContent, setSideBarContent ] = useState({
         channels: [],
@@ -31,7 +33,10 @@ const MainPage = () => {
     }, [])
 
     return (
-        <h1>HELOOOOO</h1>
+        <div>
+            <Header />
+            <h1>HELOOOOO</h1>
+        </div>
     )
 };
 
