@@ -1,26 +1,31 @@
 import React ,{ Component } from 'react';
 import './App.css';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import { withRouter } from 'react-router';
 
 import LoginForm from './Components/Forms/LoginForm';
+import MainPage from './Components/MainPage/MainPage';
 
 class App extends Component {
   state = {
-    myName: 'Alex',
-    formData: {
-      email: '',
-      password: ''
-    },
-    isSubmitting: false
+   isLoggedIn: false
+  }
+
+  isUserLoggedIn = () => {
+    this.props.history.push('/main-page')
   }
   
+
   render () {
     return (
       <div className="App">
-        <Route path='/' exact component = { LoginForm } />
+        <Switch>
+        <Route path='/' exact render={() => <LoginForm isLoggedIn={ this.isUserLoggedIn}/> } />
+        <Route path='/main-page' exact component = { MainPage } />
+        </Switch>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);
