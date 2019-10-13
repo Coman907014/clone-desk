@@ -13,21 +13,19 @@ const LoginForm = (props) => {
 
     const submitFormData = (e) => {
         e.preventDefault()
-        const CORSHack = 'https://cors-anywhere.herokuapp.com/'
-        const baseURL = `${CORSHack}https://test-api.clonedesk.com/api/v2/current-user/login-session`;
+        const baseURL = `https://test-api.clonedesk.com/api/v2/current-user/login-session`;
         axios.post(baseURL, {
           'email' : formInformation.email,
           'password' : formInformation.password,
         })
         .then(response => {
+          console.log(response)
           const sessionKey = response.data.session_key;
           if(sessionKey) {
-            localStorage.setItem('sessionKey', sessionKey)
-            document.cookie = `sessionKey=${sessionKey}`;
             setIsLoggedIn(true);
           }
         })
-        .catch(error => console.log(error))
+        .catch(error => console.log('error', error))
       }
 
     const saveInformationFromForm = (event) => {
