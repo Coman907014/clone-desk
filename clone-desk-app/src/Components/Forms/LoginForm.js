@@ -19,9 +19,7 @@ const LoginForm = (props) => {
           'password' : formInformation.password,
         })
         .then(response => {
-          console.log(response)
-          const sessionKey = response.data.session_key;
-          if(sessionKey) {
+          if(response.status === 200) {
             setIsLoggedIn(true);
           }
         })
