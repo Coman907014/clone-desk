@@ -1,10 +1,10 @@
 import React from 'react';
-import styles from './Header.module.css'
+import style from './Header.module.css';
 
 const Header = () => {
     return(
-        <div style={{'marginTop':'0'}}>
-            <h1>Logo Placeholder</h1>
+        <div>
+            <h1 className={style.LogoWrapper}>Logo Placeholder</h1>
         </div>
     )
 }
