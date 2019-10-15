@@ -20,8 +20,30 @@
 .SideBarContent {
     background-color: blanchedalmond;
     margin-top: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
     border: 1px solid lightgrey;
     border-radius: 20px;
     font-size: 20px;
+    cursor: pointer;
+}
+
+.AddSideBarContent {
+    background-color: lightcoral;
+    margin-top: 10px;
+    width: 60%;
+    margin-left: 20%;
+    border: 1px solid lightgrey;
+    border-radius: 20px;
+    font-size: 20px;
+    cursor: pointer;
+    align-content: center;
+}
+
+.TasksEveryone {
+    float: right;
+    margin-right: 5%;
+    background-color: red;
+    border-radius: 5px;
     cursor: pointer;
 }

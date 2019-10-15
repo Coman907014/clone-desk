@@ -47,13 +47,11 @@ class App extends Component {
           },
           dataIsFetched: true
         })
-        console.log(this.state.data)
     })
     .catch(error => console.log(error))
 }
   toggleElementHandler = (event) => {
-    
-  console.log(this.state);
+  
    return event.target.id === 'channels'
     ? this.setState((prevState) => {return {showChannels: !prevState.showChannels}})
     : event.target.id === 'organizations'
@@ -69,7 +67,12 @@ class App extends Component {
       <div className="App">
         <Switch>
         <Route path='/' exact render={() => (<LoginForm isLoggedIn={this.isUserLoggedInHandler}/> )} />
-        <Route path='/main-page' exact render = {() => <MainPage data={this.state.data} toggleElement={this.toggleElementHandler}/> } />
+        <Route path='/main-page' exact render = {() => <MainPage
+          data={this.state.data}
+          toggleElement={this.toggleElementHandler}
+          showChannels={this.state.showChannels}
+          showOrganizations={this.state.showOrganizations}
+          showProjects={this.state.showProjects}/> } />
         </Switch>
       </div>
     );
