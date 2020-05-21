@@ -1,0 +1,57 @@
+import WidgetError from "auto-widget-framework/src/Error/WidgetError";
+import getCurrencySymbol from "currency-symbol-map";
+
+export default class Price {
+
+  /**
+   * Formats price.
+   *
+   * Examples for 100,000.9999999 as input:
+   *  format="%[,###.##]" -> $100,000.99
+   *  format="%[,###]" -> $100,000.9999999
+   *  format="%[,###.]" -> $100,000
+   *  format="[ ####.#] %" -> $10 0000.9 $
+   *
+   * @param {number} value
+   * @param {string} currency
+   * @param {string} format
+   * @return {string}
+   */
+  static format (value, currency, format) {
+    const PRICE_PART_MATCH = /\[([^\]]+)\]/;
+    const NUMBERS_MATCH = /#+/g;
+
+    if ((value === undefined)) {
+      throw new WidgetError(`Missing value for price formatting.`);
+    }
+    if (typeof value === 'string') {
+      if (value != Number.parseFloat(value)) {
+        throw new WidgetError(`Incorrect number from string for price: ${value}`);
+      }
+      value = Number.parseFloat(value);
+    }
+    if (typeof value !== 'number') {
+      throw new WidgetError(`Expected 'number' for price, got '${typeof value}'.`);
+    }
+    if (format === undefined) {
+      throw new WidgetError(`Missing format for price formatting.`);
+    }
+    if (currency === undefined) {
+      throw new WidgetError(`Missing currency for price formatting.`);
+    } else {
+      currency = getCurrencySymbol(currency);
+    }
+
+    let priceFormat = format.match(PRICE_PART_MATCH);
+    if (!priceFormat) {
+      throw new WidgetError(`Incorrect price format.`);
+    }
+
+    const sign = value < 0 ? "-" : "";
+    const twoDecimNum = sign + Math.abs(value).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    return format.replace("%", currency)
+      .replace(PRICE_PART_MATCH, twoDecimNum);
+  }
+
+}
